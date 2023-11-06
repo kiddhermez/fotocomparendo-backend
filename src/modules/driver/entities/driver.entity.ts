@@ -9,13 +9,13 @@ export class Driver {
   @Column()
   first_name: string;
 
-  @Column()
+  @Column({ default: '' })
   first_name2: string;
 
   @Column()
   last_name: string;
 
-  @Column()
+  @Column({ default: '' })
   last_name2: string;
 
   @Column()

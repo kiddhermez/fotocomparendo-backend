@@ -18,6 +18,6 @@ import { DriverModule } from './modules/driver/driver.module';
 export class AppModule {
   static PORT: number;
   constructor(private readonly ConfigService: ConfigService) {
-    AppModule.PORT = this.ConfigService.get('APP_PORT');
+    AppModule.PORT = this.ConfigService.get('PORT');
   }
 }

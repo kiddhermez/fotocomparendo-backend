@@ -52,8 +52,7 @@ export class VehicleService {
     }
 
     vehicle.plate_letter = vehicle.plate_letter.toUpperCase();
-
-    return await this.vehicleRepository.save(vehicle);
+    return await this.vehicleRepository.save(vehicle as Vehicle);
   }
 
   async updateVehicle(

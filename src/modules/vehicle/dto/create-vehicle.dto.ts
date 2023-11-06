@@ -1,22 +1,24 @@
 import {
   IsNumber,
+  IsObject,
   IsPositive,
   IsString,
+  Length,
   Max,
   MaxLength,
   Min,
   MinLength,
 } from 'class-validator';
+import { Color, TypeVehicle } from '../entities';
+import { DeepPartial, Driver } from 'typeorm';
 
 export class CreateVehicleDto {
   @IsString()
-  @MaxLength(3)
-  @MinLength(3)
+  @Length(3)
   plate_number: string;
 
   @IsString()
-  @MaxLength(3)
-  @MinLength(3)
+  @Length(3)
   plate_letter: string;
 
   @IsString()
@@ -25,18 +27,12 @@ export class CreateVehicleDto {
   @IsString()
   company: string;
 
-  @IsNumber()
-  @Max(999)
-  @Min(1)
-  color_id: number;
+  @IsObject()
+  color: Partial<Color>;
 
-  @IsNumber()
-  @Max(999)
-  @Min(1)
-  type_id: number;
+  @IsObject()
+  type: Partial<TypeVehicle>;
 
-  @MaxLength(10)
-  @MinLength(8)
-  @IsString()
-  driver_id: string;
+  @IsObject()
+  driver: Partial<Driver>;
 }
