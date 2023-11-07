@@ -31,7 +31,11 @@ export class Vehicle {
   @JoinColumn({ name: 'type' })
   type: TypeVehicle;
 
-  @OneToOne(() => Soat, (soat) => soat.vehicle)
+  @OneToOne(() => Soat, (soat) => soat.vehicle, {
+    cascade: true,
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   @JoinColumn({ name: 'soat' })
   soat: Soat;
 

@@ -12,6 +12,6 @@ export class Soat {
   @Column({ type: 'int' })
   price: number;
 
-  @OneToOne(() => Vehicle, (vehicle) => vehicle.soat)
+  @OneToOne(() => Vehicle)
   vehicle: Vehicle;
 }
