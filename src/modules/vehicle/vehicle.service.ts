@@ -18,13 +18,22 @@ export class VehicleService {
     });
   }
 
-  async getVehicle(plate_letter: string, plate_number: string) {
+  async getVehicle({
+    plate_letter,
+    plate_number,
+    driver,
+  }: {
+    plate_letter?: string;
+    plate_number?: string;
+    driver?: string;
+  }) {
     const vehicle = await this.vehicleRepository.find({
-      relations: ['type', 'driver', 'color'],
       where: {
-        plate_letter,
+        plate_letter: plate_letter?.toUpperCase(),
         plate_number,
+        driver: { id: driver },
       },
+      relations: ['type', 'driver', 'color'],
     });
 
     if (!vehicle) {
@@ -60,7 +69,7 @@ export class VehicleService {
     plate_number: string,
     vehicle: UpdateVehicleDto,
   ) {
-    const isVehicle = this.getVehicle(plate_letter, plate_number);
+    const isVehicle = this.getVehicle({ plate_letter, plate_number });
 
     const existingVehicle =
       (vehicle.plate_number || vehicle.plate_letter) &&
@@ -93,7 +102,7 @@ export class VehicleService {
   }
 
   async deleteVehicle(plate_letter: string, plate_number: string) {
-    const vehicle = await this.getVehicle(plate_letter, plate_number);
+    const vehicle = await this.getVehicle({ plate_letter, plate_number });
 
     if (!vehicle) {
       throw new NotFoundException('Vehicle not found');
