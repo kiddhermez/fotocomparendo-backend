@@ -7,7 +7,7 @@ import { ConnectionOptions } from 'typeorm';
 export const databaseProvider: DynamicModule = TypeOrmModule.forRootAsync({
   inject: [ConfigService],
   async useFactory(config: ConfigService) {
-    const isDevelopmentEnv = config.get('NODE_ENV') !== EnvEnum.Production;
+    const isDevelopmentEnv = config.get('NODE_ENV') !== 'production';
 
     const dbConfig = {
       type: 'postgres',
