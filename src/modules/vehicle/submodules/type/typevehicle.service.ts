@@ -2,8 +2,8 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
-import { TypeVehicle } from './entities';
-import { vehicletypes } from './data/vehicletypes';
+import { TypeVehicle } from '../../entities';
+import { vehicletypes } from '../../data/vehicletypes';
 
 @Injectable()
 export class TypeVehicleService {

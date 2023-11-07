@@ -2,8 +2,8 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
-import { Color } from './entities';
-import { colors } from './data/colors';
+import { Color } from '../../entities';
+import { colors } from '../../data/colors';
 
 @Injectable()
 export class ColorService {

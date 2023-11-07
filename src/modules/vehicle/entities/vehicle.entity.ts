@@ -1,8 +1,6 @@
 import { Driver } from 'src/modules/driver/entities/driver.entity';
 import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
-import { TypeVehicle } from './';
-import { Color } from './colors.entity';
-import { Soat } from 'src/modules/soat/entities';
+import { TypeVehicle, Color, Soat } from './';
 
 @Entity()
 export class Vehicle {

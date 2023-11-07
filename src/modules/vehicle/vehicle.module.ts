@@ -1,17 +1,21 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { VehicleController } from './vehicle.controller';
-import { TypeVehicleController } from './typevehicle.controller';
-import { TypeVehicleService } from './typevehicle.service';
-import { Color, TypeVehicle, Vehicle } from './entities';
+import { TypeVehicleService, TypeVehicleController } from './submodules/type/';
+import { Color, Soat, TypeVehicle, Vehicle } from './entities';
+import { ColorController, ColorService } from './submodules/color/';
+import { SoatController, SoatService } from './submodules/soat';
 import { VehicleService } from './vehicle.service';
-import { ColorController } from './color.controller';
-import { ColorService } from './color.service';
+import { VehicleController } from './vehicle.controller';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Vehicle, TypeVehicle, Color])],
-  controllers: [VehicleController, TypeVehicleController, ColorController],
-  providers: [VehicleService, TypeVehicleService, ColorService],
+  imports: [TypeOrmModule.forFeature([Vehicle, TypeVehicle, Color, Soat])],
+  controllers: [
+    VehicleController,
+    TypeVehicleController,
+    ColorController,
+    SoatController,
+  ],
+  providers: [VehicleService, TypeVehicleService, ColorService, SoatService],
 })
 export class VehicleModule {}
