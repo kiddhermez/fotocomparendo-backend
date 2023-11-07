@@ -1,4 +1,4 @@
 import { Controller } from '@nestjs/common';
 
-@Controller()
+@Controller('vehicle/soat')
 export class SoatController {}

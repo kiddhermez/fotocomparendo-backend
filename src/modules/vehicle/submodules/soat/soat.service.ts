@@ -1,9 +1,13 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 import { Soat } from '../../entities';
 
 @Injectable()
 export class SoatService {
-  constructor(private readonly soatRepository: Repository<Soat>) {}
+  constructor(
+    @InjectRepository(Soat)
+    private readonly soatRepository: Repository<Soat>,
+  ) {}
 }
