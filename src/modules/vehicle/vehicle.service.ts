@@ -86,7 +86,7 @@ export class VehicleService {
     const newVehicle = { ...isVehicle, ...vehicle };
     await this.vehicleRepository.update(
       { plate_letter, plate_number },
-      vehicle,
+      vehicle as Vehicle,
     );
 
     return newVehicle;

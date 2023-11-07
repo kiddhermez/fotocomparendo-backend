@@ -1,13 +1,12 @@
 import {
-  IsNumber,
+  IsObject,
   IsOptional,
-  IsPositive,
   IsString,
-  Max,
   MaxLength,
-  Min,
   MinLength,
 } from 'class-validator';
+import { Driver } from 'typeorm';
+import { Color, TypeVehicle } from '../entities';
 
 export class UpdateVehicleDto {
   @IsString()
@@ -30,21 +29,15 @@ export class UpdateVehicleDto {
   @IsOptional()
   company: string;
 
-  @IsNumber()
-  @Max(99)
-  @Min(1)
+  @IsObject()
   @IsOptional()
-  color_id: number;
+  color: Partial<Color>;
 
-  @IsNumber()
-  @Max(999)
-  @Min(1)
+  @IsObject()
   @IsOptional()
-  type_id: number;
+  type: Partial<TypeVehicle>;
 
-  @MaxLength(10)
-  @MinLength(8)
-  @IsString()
+  @IsObject()
   @IsOptional()
-  driver_id: string;
+  driver: Partial<Driver>;
 }

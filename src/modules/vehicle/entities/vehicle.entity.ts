@@ -1,7 +1,8 @@
 import { Driver } from 'src/modules/driver/entities/driver.entity';
-import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
 import { TypeVehicle } from './';
 import { Color } from './colors.entity';
+import { Soat } from 'src/modules/soat/entities';
 
 @Entity()
 export class Vehicle {
@@ -24,14 +25,6 @@ export class Vehicle {
   @JoinColumn({ name: 'color' })
   color: Color;
 
-  @ManyToOne(() => Driver, (driver) => driver.vehicles, {
-    cascade: true,
-    onDelete: 'CASCADE',
-    onUpdate: 'CASCADE',
-  })
-  @JoinColumn({ name: 'driver' })
-  driver: Driver;
-
   @ManyToOne(() => TypeVehicle, (type) => type.vehicles, {
     cascade: true,
     onDelete: 'CASCADE',
@@ -39,4 +32,16 @@ export class Vehicle {
   })
   @JoinColumn({ name: 'type' })
   type: TypeVehicle;
+
+  @OneToOne(() => Soat, (soat) => soat.vehicle)
+  @JoinColumn({ name: 'soat' })
+  soat: Soat;
+
+  @ManyToOne(() => Driver, (driver) => driver.vehicles, {
+    cascade: true,
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
+  @JoinColumn({ name: 'driver' })
+  driver: Driver;
 }

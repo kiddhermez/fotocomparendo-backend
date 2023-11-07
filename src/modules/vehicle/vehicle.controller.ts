@@ -20,7 +20,7 @@ export class VehicleController {
     return this.vehicleService.getVehicles();
   }
 
-  @Get(':plate_letter-:plate_number')
+  @Get('plate/:plate_letter/:plate_number')
   getVehicle(
     @Param('plate_letter') plate_letter: string,
     @Param('plate_number') plate_number: string,
@@ -33,7 +33,7 @@ export class VehicleController {
     return this.vehicleService.createVehicle(vehicle);
   }
 
-  @Patch(':plate_letter-:plate_number')
+  @Patch('plate/:plate_letter/:plate_number')
   updateVehicle(
     @Param('plate_letter') plate_letter: string,
     @Param('plate_number') plate_number: string,
@@ -46,7 +46,7 @@ export class VehicleController {
     );
   }
 
-  @Delete(':plate_letter-:plate_number')
+  @Delete('plate/:plate_letter/:plate_number')
   deleteVehicle(
     @Param('plate_letter') plate_letter: string,
     @Param('plate_number') plate_number: string,
