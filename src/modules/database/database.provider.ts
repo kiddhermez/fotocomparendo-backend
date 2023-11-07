@@ -1,7 +1,6 @@
 import { DynamicModule } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { EnvEnum } from 'src/common/enums';
 import { ConnectionOptions } from 'typeorm';
 
 export const databaseProvider: DynamicModule = TypeOrmModule.forRootAsync({
