@@ -3,16 +3,13 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 import { TypeVehicle } from '../../entities';
-import { vehicletypes } from '../../data/vehicletypes';
 
 @Injectable()
 export class TypeVehicleService {
   constructor(
     @InjectRepository(TypeVehicle)
     private readonly typeVehicleRepository: Repository<TypeVehicle>,
-  ) {
-    typeVehicleRepository.save(vehicletypes);
-  }
+  ) {}
 
   async getTypes() {
     return await this.typeVehicleRepository.find();

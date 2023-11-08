@@ -1,5 +1,5 @@
 import { Vehicle } from 'src/modules/vehicle/entities';
-import { Column, Entity, OneToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
 
 @Entity()
 export class Soat {
@@ -12,6 +12,11 @@ export class Soat {
   @Column({ type: 'int' })
   price: number;
 
-  @OneToOne(() => Vehicle)
+  @OneToOne(() => Vehicle, (vehicle) => vehicle.soat, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+    cascade: true,
+  })
+  @JoinColumn()
   vehicle: Vehicle;
 }

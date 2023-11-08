@@ -20,17 +20,9 @@ export class VehicleController {
     return this.vehicleService.getVehicles();
   }
 
-  @Get('plate/:plate_letter/:plate_number')
-  getVehicle(
-    @Param('plate_letter') plate_letter: string,
-    @Param('plate_number') plate_number: string,
-  ) {
-    return this.vehicleService.getVehicle({ plate_letter, plate_number });
-  }
-
   @Get('driver/:id')
   getVehicleByDriver(@Param('id') id: string) {
-    return this.vehicleService.getVehicle({ driver: id });
+    return this.vehicleService.getVehicle(id);
   }
 
   @Post()
