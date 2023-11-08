@@ -1,8 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 import { TypeVehicle } from '../../entities';
+import { DataDto } from 'src/modules/data.dto';
 
 @Injectable()
 export class TypeVehicleService {
@@ -12,16 +13,24 @@ export class TypeVehicleService {
   ) {}
 
   async getTypes() {
-    return await this.typeVehicleRepository.find();
-  }
+    const types = await this.typeVehicleRepository.find();
+    let result: DataDto;
 
-  async getType(id: number) {
-    const type = await this.typeVehicleRepository.findOneBy({ id });
-
-    if (!type) {
-      throw new NotFoundException('Type not found');
+    if (!types) {
+      result = {
+        state: 404,
+        message: 'Types not found',
+        data: [],
+      };
+      return result;
     }
 
-    return type;
+    result = {
+      state: 200,
+      message: 'Types found',
+      total: types.length,
+      data: types,
+    };
+    return result;
   }
 }

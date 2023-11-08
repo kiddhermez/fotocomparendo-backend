@@ -10,9 +10,4 @@ export class TypeVehicleController {
   getTypes() {
     return this.typeVehicleService.getTypes();
   }
-
-  @Get(':id')
-  getType(@Param('id') id: number) {
-    return this.typeVehicleService.getType(id);
-  }
 }

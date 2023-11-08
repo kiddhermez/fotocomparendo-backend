@@ -1,8 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 import { Color } from '../../entities';
+import { DataDto } from 'src/modules/data.dto';
 
 @Injectable()
 export class ColorService {
@@ -12,16 +13,24 @@ export class ColorService {
   ) {}
 
   async getColors() {
-    return await this.colorRepository.find();
-  }
+    const colors = await this.colorRepository.find();
+    let result: DataDto;
 
-  async getColor(id: number) {
-    const color = await this.colorRepository.findOneBy({ id });
-
-    if (!color) {
-      throw new NotFoundException('Color not found');
+    if (!colors) {
+      result = {
+        state: 404,
+        message: 'Colors not found',
+        data: [],
+      };
+      return result;
     }
 
-    return color;
+    result = {
+      state: 200,
+      message: 'Colors found',
+      total: colors.length,
+      data: colors,
+    };
+    return result;
   }
 }

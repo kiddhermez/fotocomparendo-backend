@@ -37,7 +37,7 @@ export class VehicleController {
     @Body() vehicle: UpdateVehicleDto,
   ) {
     return this.vehicleService.updateVehicle(
-      plate_letter,
+      plate_letter.toUpperCase(),
       plate_number,
       vehicle,
     );
@@ -48,6 +48,9 @@ export class VehicleController {
     @Param('plate_letter') plate_letter: string,
     @Param('plate_number') plate_number: string,
   ) {
-    return this.vehicleService.deleteVehicle(plate_letter, plate_number);
+    return this.vehicleService.deleteVehicle(
+      plate_letter.toUpperCase(),
+      plate_number,
+    );
   }
 }

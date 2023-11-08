@@ -33,7 +33,7 @@ export class Vehicle {
   @JoinColumn({ name: 'type' })
   type: TypeVehicle;
 
-  @OneToOne(() => Soat)
+  @OneToOne(() => Soat, (soat) => soat.vehicle)
   soat: Soat;
 
   @ManyToOne(() => Driver, (driver) => driver.vehicles, {

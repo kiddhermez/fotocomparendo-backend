@@ -1,9 +1,10 @@
-import { HttpException, Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { Driver } from './entities/driver.entity';
 import { CreateDriverDto, UpdateDriverDto } from './dto';
+import { DataDto } from '../data.dto';
 
 @Injectable()
 export class DriverService {
@@ -13,58 +14,145 @@ export class DriverService {
   ) {}
 
   async getDrivers() {
-    return await this.driverRepository.find({
-      relations: ['vehicles'],
+    const drivers = await this.driverRepository.find({
+      relations: [
+        'vehicles',
+        'vehicles.type',
+        'vehicles.color',
+        'vehicles.soat',
+      ],
     });
+    let result: DataDto;
+
+    if (!drivers) {
+      result = {
+        state: 404,
+        message: 'Drivers not found',
+        data: [],
+      };
+
+      return result;
+    }
+
+    result = {
+      state: 200,
+      message: `Drivers found`,
+      total: drivers.length,
+      data: drivers,
+    };
+    return result;
   }
 
   async getDriver(id: string) {
     const driver = await this.driverRepository.findOneBy({ id });
+    let result: DataDto;
 
     if (!driver) {
-      throw new NotFoundException('Driver not found');
+      result = {
+        state: 404,
+        message: 'Driver not found',
+        data: [],
+      };
+      return result;
     }
 
-    return driver;
+    result = {
+      state: 200,
+      message: `Driver found`,
+      data: [driver],
+    };
+    return result;
   }
 
   async createDriver(driver: CreateDriverDto) {
-    const existingDriver = await this.driverRepository.findOne({
-      where: { id: driver.id },
+    const existingDriver = await this.driverRepository.findOneBy({
+      id: driver.id,
     });
 
+    let result: DataDto;
+
     if (existingDriver) {
-      throw new HttpException({ error: 'Driver already exists' }, 400);
+      result = {
+        state: 409,
+        message: 'Driver already exists',
+        data: [],
+      };
+
+      return result;
     }
 
-    return await this.driverRepository.save(driver);
+    const newDriver = await this.driverRepository.save(driver);
+    result = {
+      state: 201,
+      message: 'Driver created',
+      data: [newDriver],
+    };
+
+    return result;
   }
 
   async updateDriver(id: string, driver: UpdateDriverDto) {
-    const user = await this.getDriver(id);
+    let result: DataDto;
 
-    const existingDriver =
-      driver.id &&
-      driver.id !== id &&
-      (await this.driverRepository.findOne({
-        where: { id: driver.id },
-      }));
+    const existDriver = await this.driverRepository.findOneBy({
+      id,
+    });
+    if (!existDriver) {
+      result = {
+        state: 404,
+        message: 'Driver not found',
+        data: [],
+      };
 
-    if (existingDriver) {
-      throw new HttpException({ error: 'Driver already exists' }, 400);
+      return result;
     }
 
-    const newDriver = { ...user, ...driver };
-    await this.driverRepository.update(id, driver);
+    const existNewDriver = await this.driverRepository.findOneBy({
+      id: driver.id ?? id,
+    });
+    if (
+      existNewDriver &&
+      JSON.stringify(existDriver) !== JSON.stringify(existNewDriver)
+    ) {
+      result = {
+        state: 409,
+        message: 'Driver already exists',
+        data: [],
+      };
 
-    return newDriver;
+      return result;
+    }
+
+    await this.driverRepository.update(id, driver);
+    result = {
+      state: 200,
+      message: 'Driver updated',
+      data: [{ ...existDriver, ...driver }],
+    };
+    return result;
   }
 
   async deleteDriver(id: string) {
-    const driver = await this.getDriver(id);
+    const driver = await this.driverRepository.findOneBy({ id });
+    let result: DataDto;
+
+    if (!driver) {
+      result = {
+        state: 404,
+        message: 'Driver not found',
+        data: [],
+      };
+
+      return result;
+    }
 
     this.driverRepository.remove(driver);
+    result = {
+      state: 200,
+      message: 'Driver deleted',
+      data: [driver],
+    };
 
-    return driver;
+    return result;
   }
 }

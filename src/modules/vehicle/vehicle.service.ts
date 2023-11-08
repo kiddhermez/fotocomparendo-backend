@@ -1,9 +1,10 @@
-import { HttpException, Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { Vehicle } from './entities';
 import { Repository } from 'typeorm';
 import { CreateVehicleDto, UpdateVehicleDto } from './dto';
+import { DataDto } from '../data.dto';
 
 @Injectable()
 export class VehicleService {
@@ -13,9 +14,27 @@ export class VehicleService {
   ) {}
 
   async getVehicles() {
-    return await this.vehicleRepository.find({
-      relations: ['type', 'driver', 'color'],
+    const vehicles = await this.vehicleRepository.find({
+      relations: ['type', 'color'],
     });
+    let result: DataDto;
+
+    if (!vehicles) {
+      result = {
+        state: 404,
+        message: 'Vehicles not found',
+        data: [],
+      };
+      return result;
+    }
+
+    result = {
+      state: 200,
+      message: 'Vehicles found',
+      total: vehicles.length,
+      data: vehicles,
+    };
+    return result;
   }
 
   async getVehicle(driver: string) {
@@ -26,11 +45,23 @@ export class VehicleService {
       relations: ['type', 'color'],
     });
 
+    let result: DataDto;
+
     if (!vehicle) {
-      throw new NotFoundException('Vehicle not found');
+      result = {
+        state: 404,
+        message: 'Vehicle not found',
+        data: [],
+      };
+      return result;
     }
 
-    return vehicle;
+    result = {
+      state: 200,
+      message: 'Vehicle found',
+      data: vehicle,
+    };
+    return result;
   }
 
   async createVehicle(vehicle: CreateVehicleDto) {
@@ -39,17 +70,33 @@ export class VehicleService {
       plate_number: vehicle.plate_number,
     });
 
+    let result: DataDto;
+
     if (existingVehicle) {
-      throw new HttpException(
-        {
-          error: 'Vehicle already exists',
-        },
-        400,
-      );
+      result = {
+        state: 409,
+        message: 'Vehicle already exists',
+        data: [],
+      };
+      return result;
     }
 
     vehicle.plate_letter = vehicle.plate_letter.toUpperCase();
-    return await this.vehicleRepository.save(vehicle as Vehicle);
+    await this.vehicleRepository.save(vehicle as Vehicle);
+    const newVehicle = await this.vehicleRepository.findOne({
+      where: {
+        plate_letter: vehicle.plate_letter,
+        plate_number: vehicle.plate_number,
+      },
+      relations: ['type', 'color', 'driver'],
+    });
+
+    result = {
+      state: 201,
+      message: 'Vehicle created',
+      data: [newVehicle],
+    };
+    return result;
   }
 
   async updateVehicle(
@@ -62,8 +109,15 @@ export class VehicleService {
       plate_number,
     });
 
+    let result: DataDto;
+
     if (!existVehicle) {
-      throw new NotFoundException('Vehicle not found');
+      result = {
+        state: 404,
+        message: 'Vehicle not found',
+        data: [],
+      };
+      return result;
     }
 
     const existNewVehicle = await this.vehicleRepository.findOneBy({
@@ -75,12 +129,12 @@ export class VehicleService {
       existNewVehicle &&
       JSON.stringify(existVehicle) !== JSON.stringify(existNewVehicle)
     ) {
-      throw new HttpException(
-        {
-          error: 'Vehicle already exists',
-        },
-        400,
-      );
+      result = {
+        state: 409,
+        message: 'Vehicle already exists',
+        data: [],
+      };
+      return result;
     }
 
     vehicle.plate_letter = vehicle.plate_letter?.toUpperCase();
@@ -89,7 +143,20 @@ export class VehicleService {
       vehicle as Vehicle,
     );
 
-    return { ...existVehicle, ...vehicle };
+    const updatedVehicle = await this.vehicleRepository.findOne({
+      where: {
+        plate_letter: vehicle.plate_letter ?? plate_letter,
+        plate_number: vehicle.plate_number ?? plate_number,
+      },
+      relations: ['type', 'color', 'driver'],
+    });
+
+    result = {
+      state: 200,
+      message: 'Vehicle updated',
+      data: [updatedVehicle],
+    };
+    return result;
   }
 
   async deleteVehicle(plate_letter: string, plate_number: string) {
@@ -98,12 +165,23 @@ export class VehicleService {
       plate_number,
     });
 
+    let result: DataDto;
+
     if (!vehicle) {
-      throw new NotFoundException('Vehicle not found');
+      result = {
+        state: 404,
+        message: 'Vehicle not found',
+        data: [],
+      };
+      return result;
     }
 
     await this.vehicleRepository.delete(vehicle);
-
-    return vehicle;
+    result = {
+      state: 200,
+      message: 'Vehicle deleted',
+      data: [vehicle],
+    };
+    return result;
   }
 }

@@ -10,9 +10,4 @@ export class ColorController {
   getColors() {
     return this.colorService.getColors();
   }
-
-  @Get(':id')
-  getColor(@Param('id') id: number) {
-    return this.colorService.getColor(id);
-  }
 }
