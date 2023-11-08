@@ -1,9 +1,17 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  OneToOne,
+} from 'typeorm';
 
 import { Driver } from 'src/modules/driver/entities/driver.entity';
 import { Color, TypeVehicle } from '.';
 import { Soat } from 'src/modules/soat/entities/soat.entity';
 import { Techno } from 'src/modules/techno/entities/techno.entity';
+import { Ticket } from 'src/modules/ticket/entities/ticket.entity';
 
 @Entity()
 export class Vehicle {
@@ -47,4 +55,7 @@ export class Vehicle {
   })
   @JoinColumn({ name: 'driver' })
   driver: Driver;
+
+  @OneToMany(() => Ticket, (ticket) => ticket.vehicle)
+  tickets: Ticket[];
 }

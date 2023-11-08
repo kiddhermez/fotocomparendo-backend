@@ -1,18 +1,9 @@
-import {
-  IsNumber,
-  IsObject,
-  IsOptional,
-  IsPositive,
-  IsString,
-  Length,
-  Max,
-  MaxLength,
-  Min,
-  MinLength,
-} from 'class-validator';
+import { IsObject, IsOptional, IsString, Length } from 'class-validator';
 import { Color, TypeVehicle } from '../entities';
 import { Soat } from 'src/modules/soat/entities/soat.entity';
 import { Driver } from 'src/modules/driver/entities/driver.entity';
+import { Techno } from 'src/modules/techno/entities/techno.entity';
+import { Ticket } from 'src/modules/ticket/entities/ticket.entity';
 
 export class CreateVehicleDto {
   @IsString()
@@ -41,4 +32,12 @@ export class CreateVehicleDto {
   @IsObject()
   @IsOptional()
   soat: Partial<Soat>;
+
+  @IsObject()
+  @IsOptional()
+  techno: Partial<Techno>;
+
+  @IsObject()
+  @IsOptional()
+  tickets: Partial<Ticket>[];
 }

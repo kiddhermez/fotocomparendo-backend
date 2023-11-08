@@ -1,3 +1,4 @@
+import { TicketModule } from './modules/ticket/ticket.module';
 import { LicenseModule } from './modules/license/license.module';
 import { TechnoModule } from './modules/techno/techno.module';
 import { SoatModule } from './modules/soat/soat.module';
@@ -10,6 +11,7 @@ import { DriverModule } from './modules/driver/driver.module';
 
 @Module({
   imports: [
+    TicketModule,
     LicenseModule,
     TechnoModule,
     SoatModule,
