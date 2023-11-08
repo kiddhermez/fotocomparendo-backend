@@ -1,3 +1,4 @@
+import { License } from 'src/modules/license/entities/license.entity';
 import { Vehicle } from 'src/modules/vehicle/entities/vehicle.entity';
 import { Column, Entity, OneToMany } from 'typeorm';
 
@@ -23,4 +24,7 @@ export class Driver {
 
   @OneToMany(() => Vehicle, (vehicle) => vehicle.driver)
   vehicles: Vehicle[];
+
+  @OneToMany(() => License, (license) => license.driver)
+  licenses: License[];
 }

@@ -1,3 +1,4 @@
+import { LicenseModule } from './modules/license/license.module';
 import { TechnoModule } from './modules/techno/techno.module';
 import { SoatModule } from './modules/soat/soat.module';
 import { Module } from '@nestjs/common';
@@ -9,6 +10,7 @@ import { DriverModule } from './modules/driver/driver.module';
 
 @Module({
   imports: [
+    LicenseModule,
     TechnoModule,
     SoatModule,
     DatabaseModule,
