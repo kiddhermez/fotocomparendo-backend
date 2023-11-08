@@ -2,7 +2,20 @@
 https://docs.nestjs.com/controllers#controllers
 */
 
-import { Controller } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
+import { TicketService } from './ticket.service';
 
-@Controller()
-export class TicketController {}
+@Controller('ticket')
+export class TicketController {
+  constructor(private readonly ticketService: TicketService) {}
+
+  @Get()
+  getTickets() {
+    return this.ticketService.getTickets();
+  }
+
+  @Get('/driver/:id')
+  getTicket(id: string) {
+    return this.ticketService.getTicket(id);
+  }
+}

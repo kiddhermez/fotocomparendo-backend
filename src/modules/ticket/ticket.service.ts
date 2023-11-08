@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Ticket } from './entities/ticket.entity';
-import { Repository } from 'typeorm';
+import { FindOptionsWhere, Repository } from 'typeorm';
 import { DataDto } from '../data.dto';
 
 @Injectable()
@@ -33,5 +33,28 @@ export class TicketService {
     return result;
   }
 
-  async getTicket(id: number) {}
+  async getTicket(id: string) {
+    const ticket = await this.ticketRepository.find({
+      where: { vehicle: { driver: { id } } },
+      relations: ['vehicle'],
+    });
+    let result: DataDto;
+
+    if (!ticket) {
+      result = {
+        state: 404,
+        message: 'Ticket not found',
+        data: [],
+      };
+      return result;
+    }
+
+    result = {
+      state: 200,
+      message: 'Ticket found',
+      data: ticket,
+      total: ticket.length,
+    };
+    return result;
+  }
 }
