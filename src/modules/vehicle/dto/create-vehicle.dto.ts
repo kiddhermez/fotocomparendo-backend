@@ -1,6 +1,7 @@
 import {
   IsNumber,
   IsObject,
+  IsOptional,
   IsPositive,
   IsString,
   Length,
@@ -10,15 +11,16 @@ import {
   MinLength,
 } from 'class-validator';
 import { Color, TypeVehicle } from '../entities';
-import { DeepPartial, Driver } from 'typeorm';
+import { Soat } from 'src/modules/soat/entities/soat.entity';
+import { Driver } from 'src/modules/driver/entities/driver.entity';
 
 export class CreateVehicleDto {
   @IsString()
-  @Length(3)
+  @Length(3, 3)
   plate_number: string;
 
   @IsString()
-  @Length(3)
+  @Length(3, 3)
   plate_letter: string;
 
   @IsString()
@@ -35,4 +37,8 @@ export class CreateVehicleDto {
 
   @IsObject()
   driver: Partial<Driver>;
+
+  @IsObject()
+  @IsOptional()
+  soat: Partial<Soat>;
 }

@@ -3,6 +3,7 @@ import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
 import { Driver } from 'src/modules/driver/entities/driver.entity';
 import { Color, TypeVehicle } from '.';
 import { Soat } from 'src/modules/soat/entities/soat.entity';
+import { Techno } from 'src/modules/techno/entities/techno.entity';
 
 @Entity()
 export class Vehicle {
@@ -35,6 +36,9 @@ export class Vehicle {
 
   @OneToOne(() => Soat, (soat) => soat.vehicle)
   soat: Soat;
+
+  @OneToOne(() => Techno, (techno) => techno.vehicle)
+  techno: Techno;
 
   @ManyToOne(() => Driver, (driver) => driver.vehicles, {
     cascade: true,

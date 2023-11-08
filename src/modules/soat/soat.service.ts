@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Soat } from './entities/soat.entity';
 import { DataDto } from '../data.dto';
+import { CreateSoatDto, UpdateSoatDto } from './dto';
 
 @Injectable()
 export class SoatService {
@@ -53,7 +54,7 @@ export class SoatService {
     return soat;
   }
 
-  async createSoat(soat: Soat) {
+  async createSoat(soat: CreateSoatDto) {
     const existSoat = this.soatRepository.findOneBy({
       policy: soat.policy,
     });
@@ -79,7 +80,7 @@ export class SoatService {
     return result;
   }
 
-  async updateSoat(policy: string, soat: Soat) {
+  async updateSoat(policy: string, soat: UpdateSoatDto) {
     const existSoat = await this.soatRepository.findOneBy({ policy: policy });
     let result: DataDto;
 

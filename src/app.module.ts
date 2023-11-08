@@ -1,3 +1,4 @@
+import { TechnoModule } from './modules/techno/techno.module';
 import { SoatModule } from './modules/soat/soat.module';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -8,6 +9,7 @@ import { DriverModule } from './modules/driver/driver.module';
 
 @Module({
   imports: [
+    TechnoModule,
     SoatModule,
     DatabaseModule,
     VehicleModule,
