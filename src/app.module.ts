@@ -1,23 +1,12 @@
-import { TicketModule } from './modules/ticket/ticket.module';
-import { LicenseModule } from './modules/license/license.module';
-import { TechnoModule } from './modules/techno/techno.module';
-import { SoatModule } from './modules/soat/soat.module';
+import { DriverModule } from './modules/driver/driver.module';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-
 import { DatabaseModule } from './modules/database/database.module';
-import { VehicleModule } from './modules/vehicle/vehicle.module';
-import { DriverModule } from './modules/driver/driver.module';
 
 @Module({
   imports: [
-    TicketModule,
-    LicenseModule,
-    TechnoModule,
-    SoatModule,
-    DatabaseModule,
-    VehicleModule,
     DriverModule,
+    DatabaseModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),

@@ -1,4 +1,4 @@
-export class DataDto {
+export class OutDto {
   state: number;
   message: string;
   total?: number;
