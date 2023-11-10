@@ -1,6 +1,6 @@
-export class OutDto {
+export class OutDto<T> {
   state: number;
   message: string;
   total?: number;
-  data: any[];
+  data: T[];
 }
