@@ -23,7 +23,7 @@ export class DatabaseService<T> {
             reject(err);
           } else {
             const results: T[] = rows.map((row: any) => {
-              return Object.assign({}, row);
+              return Object.assign({} as T, row);
             });
             resolve(results.length > 0 ? results : undefined);
           }
@@ -33,7 +33,12 @@ export class DatabaseService<T> {
     return result;
   }
 
-  async queryAdd(query: string, values?: any[]) {
+  async queryCall<T>(query: string, values?: any[]) {
+    const data = await this.queryGet(query, values);
+    return Object.values(data[0]) as T[];
+  }
+
+  async query(query: string, values?: any[]) {
     const result = new Promise<mysql.ResultSetHeader>((resolve, reject) => {
       this.connection.query(
         query,

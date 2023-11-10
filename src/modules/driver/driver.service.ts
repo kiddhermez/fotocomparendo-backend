@@ -1,37 +1,35 @@
 import { Inject, Injectable } from '@nestjs/common';
+
 import { DatabaseService } from '../database/database.service';
-import { OutDto } from '../out.dto';
 import { Driver } from './interfaces/driver';
 import { CreateDriverDto, UpdateDriverDto } from './interfaces';
+import {
+  isConflict,
+  isCreated,
+  isDeleted,
+  isFound,
+  isUpdated,
+  notFound,
+} from 'src/outStates';
 
 @Injectable()
 export class DriverService {
-  private result: OutDto<Driver>;
-
   constructor(
     @Inject(DatabaseService) private readonly db: DatabaseService<Driver>,
   ) {}
 
-  // Get all drivers
   async getDrivers() {
     const drivers = await this.db.queryGet(`SELECT * FROM conductor`);
 
     if (!drivers) {
-      this.result = {
-        state: 404,
-        message: 'Drivers not found',
-        data: [],
-      };
-      return this.result;
+      return notFound<Driver>('Driver');
     }
 
-    this.result = {
-      state: 200,
-      message: 'Drivers found',
-      total: drivers.length,
+    return isFound<Driver>({
       data: drivers,
-    };
-    return this.result;
+      length: drivers.length,
+      name: 'Drivers',
+    });
   }
 
   // Get driver by id
@@ -40,21 +38,14 @@ export class DriverService {
     const data = Object.values(driver[0]);
 
     if (data.length === 0) {
-      this.result = {
-        state: 404,
-        message: 'Driver not found',
-        data: [],
-      };
-      return this.result;
+      return notFound<Driver>('Driver');
     }
 
-    this.result = {
-      state: 200,
-      message: 'Driver found',
-      total: data.length,
+    return isFound<Driver>({
       data: data,
-    };
-    return this.result;
+      length: data.length,
+      name: 'Driver',
+    });
   }
 
   // Get driver by plate
@@ -66,21 +57,14 @@ export class DriverService {
     const data = Object.values(driver[0]);
 
     if (data.length === 0) {
-      this.result = {
-        state: 404,
-        message: 'Driver not found',
-        data: [],
-      };
-      return this.result;
+      return notFound<Driver>('Driver');
     }
 
-    this.result = {
-      state: 200,
-      message: 'Driver found',
-      total: data.length,
+    return isFound<Driver>({
       data: data,
-    };
-    return this.result;
+      length: data.length,
+      name: 'Driver',
+    });
   }
 
   // Create new driver
@@ -90,15 +74,10 @@ export class DriverService {
     ]);
 
     if (Object.values(driverExists[0]).length > 0) {
-      this.result = {
-        state: 409,
-        message: 'Driver already exists',
-        data: [],
-      };
-      return this.result;
+      return notFound<Driver>('Driver');
     }
 
-    await this.db.queryAdd(
+    await this.db.query(
       'INSERT INTO conductor (cedula,nombre1,nombre2,apellido1,apellido2,fecha_nacimiento) VALUES (?,?,?,?,?,?)',
       [
         driver.cedula,
@@ -110,19 +89,7 @@ export class DriverService {
       ],
     );
 
-    const newDriver = await this.db.queryGet('CALL BuscarConductorCC(?)', [
-      driver.cedula,
-    ]);
-
-    const data = Object.values(newDriver[0]);
-
-    this.result = {
-      state: 201,
-      message: 'Driver created',
-      total: data.length,
-      data: data,
-    };
-    return this.result;
+    return isCreated<Driver>('Driver');
   }
 
   // Update driver
@@ -141,17 +108,12 @@ export class DriverService {
       driverAlreadyExists.state === 200 &&
       JSON.stringify(driverAlreadyExists) !== JSON.stringify(driverExists)
     ) {
-      this.result = {
-        state: 409,
-        message: 'Driver already exists',
-        data: [],
-      };
-      return this.result;
+      return isConflict<Driver>('Driver');
     }
 
     // Update driver in database
     const { data: oldDriver } = driverExists;
-    await this.db.queryAdd(
+    await this.db.query(
       'UPDATE conductor SET cedula = ?, nombre1 = ?, nombre2 = ?, apellido1 = ?, apellido2 = ?, fecha_nacimiento = ? WHERE cedula = ?',
       [
         driver.cedula ?? id,
@@ -164,9 +126,7 @@ export class DriverService {
       ],
     );
 
-    this.result = await this.getDriverById(driver.cedula ?? id);
-    this.result.message = 'Driver updated';
-    return this.result;
+    return isUpdated<Driver>('Driver');
   }
 
   // Delete driver
@@ -177,14 +137,8 @@ export class DriverService {
       return driverExists;
     }
 
-    await this.db.queryAdd('DELETE FROM conductor WHERE cedula = ?', [id]);
+    await this.db.query('DELETE FROM conductor WHERE cedula = ?', [id]);
 
-    this.result = {
-      state: 200,
-      message: 'Driver deleted',
-      data: driverExists.data,
-    };
-
-    return this.result;
+    return isDeleted<Driver>('Driver');
   }
 }
