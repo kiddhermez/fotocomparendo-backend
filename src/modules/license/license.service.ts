@@ -80,16 +80,7 @@ export class LicenseService {
       return isConflict<License>('License');
     }
 
-    await this.db.query(
-      'INSERT INTO licencia (nro_lic,fecha_expedicion,fecha_vencimiento,cod_categoria,cedula) VALUES (?,?,?,?,?)',
-      [
-        license.nro_lic,
-        license.fecha_expedicion,
-        license.fecha_vencimiento,
-        license.cod_categoria,
-        license.cedula,
-      ],
-    );
+    await this.db.query('INSERT INTO licencia SET ?', [license]);
     return isCreated<License>('License');
   }
 
@@ -112,19 +103,10 @@ export class LicenseService {
       return isConflict<License>('License');
     }
 
-    const oldLicense = licenseExists[0];
-
-    await this.db.query(
-      'UPDATE licencia SET nro_lic = ?, fecha_expedicion = ?, fecha_vencimiento = ?, cod_categoria = ?, cedula = ? WHERE nro_lic = ?',
-      [
-        license.nro_lic ?? oldLicense.nro_lic,
-        license.fecha_expedicion ?? oldLicense.fecha_expedicion,
-        license.fecha_vencimiento ?? oldLicense.fecha_vencimiento,
-        license.cod_categoria ?? oldLicense.cod_categoria,
-        license.cedula ?? oldLicense.cedula,
-        id,
-      ],
-    );
+    await this.db.query('UPDATE licencia SET ? WHERE nro_lic = ?', [
+      license,
+      id,
+    ]);
 
     return isUpdated<License>('License');
   }
