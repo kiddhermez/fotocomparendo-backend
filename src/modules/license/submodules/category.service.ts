@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { DatabaseService } from 'src/modules/database/database.service';
 import { Category } from '../interfaces';
 import { OutDto } from 'src/modules/out.dto';
-import { isFound, notFound } from 'src/outStates';
+import { isFound, notFound } from '../../outStates';
 
 @Injectable()
 export class CategoryService {

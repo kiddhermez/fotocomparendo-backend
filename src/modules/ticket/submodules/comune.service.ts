@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { DatabaseService } from 'src/modules/database/database.service';
-import { notFound, isFound } from 'src/outStates';
+import { notFound, isFound } from '../../outStates';
 import { Comune } from '../interfaces/comune';
 
 @Injectable()

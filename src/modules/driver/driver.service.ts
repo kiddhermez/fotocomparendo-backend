@@ -10,7 +10,7 @@ import {
   isFound,
   isUpdated,
   notFound,
-} from 'src/outStates';
+} from '../outStates';
 
 @Injectable()
 export class DriverService {

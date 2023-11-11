@@ -8,7 +8,7 @@ import {
   isCreated,
   isUpdated,
   isDeleted,
-} from 'src/outStates';
+} from '../outStates/index';
 import { useCreateTicket, useDeleteTicket } from './useTicket';
 import { comunesList } from './data/comunesList';
 

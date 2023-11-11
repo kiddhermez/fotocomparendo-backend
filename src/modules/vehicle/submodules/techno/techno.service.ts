@@ -8,7 +8,7 @@ import {
   isCreated,
   isUpdated,
   isDeleted,
-} from 'src/outStates';
+} from '../../../outStates';
 import { useCreateTechno, useUpdateTechno } from './useTechno';
 
 @Injectable()

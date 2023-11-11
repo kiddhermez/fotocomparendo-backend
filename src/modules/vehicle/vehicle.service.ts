@@ -9,7 +9,7 @@ import {
   isFound,
   isUpdated,
   notFound,
-} from 'src/outStates';
+} from '../outStates';
 import { VehicleDto, useCreateVehicle, useVehicle } from './useVehicle';
 import { SoatService } from './submodules/soat/soat.service';
 import { TechnoService } from './submodules/techno/techno.service';

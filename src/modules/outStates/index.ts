@@ -1,4 +1,4 @@
-import { OutDto } from 'src/modules/out.dto';
+import { OutDto } from '../out.dto';
 
 interface props {
   data: any[];

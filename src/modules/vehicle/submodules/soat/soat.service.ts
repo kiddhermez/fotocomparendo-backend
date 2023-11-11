@@ -9,7 +9,7 @@ import {
   isCreated,
   isUpdated,
   isDeleted,
-} from 'src/outStates';
+} from '../../../outStates';
 import { useCreateSoat, useUpdateSoat } from './useSoat';
 
 @Injectable()
