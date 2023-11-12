@@ -25,7 +25,7 @@ export class VehicleService {
   async getVehicles() {
     const vehicles = await this.db.queryGet(
       `SELECT CONCAT(vehiculo.letra, "-", vehiculo.numero) AS placa,
-      linea, marca, id_color, codigo, nro_poliza, nro_acreditacion
+      linea, marca, id_color, codigo, nro_poliza, nro_acreditacion, cedula
       FROM vehiculo`,
     );
 
