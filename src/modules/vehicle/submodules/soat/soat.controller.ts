@@ -11,7 +11,7 @@ import {
 import { SoatService } from './soat.service';
 import { CreateSoatDto, UpdateSoatDto } from '../../interfaces';
 
-@Controller('vehicle/soat')
+@Controller('soat')
 export class SoatController {
   constructor(private readonly soatService: SoatService) {}
 
@@ -25,12 +25,12 @@ export class SoatController {
     return this.soatService.createSoat(soat);
   }
 
-  @Patch('id/:id')
+  @Patch(':id')
   updateSoat(@Param('id') id: string, @Body() soat: UpdateSoatDto) {
     return this.soatService.updateSoat(id, soat);
   }
 
-  @Delete('id/:id')
+  @Delete(':id')
   deleteSoat(@Param('id') id: string) {
     return this.soatService.deleteSoat(id);
   }

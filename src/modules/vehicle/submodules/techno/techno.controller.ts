@@ -10,7 +10,7 @@ import {
 import { TechnoService } from './techno.service';
 import { CreateTechnoDto, UpdateTechnoDto } from '../../interfaces';
 
-@Controller('vehicle/techno')
+@Controller('techno')
 export class TechnoController {
   constructor(private readonly technoService: TechnoService) {}
 
@@ -24,12 +24,12 @@ export class TechnoController {
     return this.technoService.createTechno(techno);
   }
 
-  @Patch('id/:id')
+  @Patch(':id')
   updateTechno(@Param('id') id: string, @Body() techno: UpdateTechnoDto) {
     return this.technoService.updateTechno(id, techno);
   }
 
-  @Delete('id/:id')
+  @Delete(':id')
   deleteTechno(@Param('id') id: string) {
     return this.technoService.deleteTechno(id);
   }
