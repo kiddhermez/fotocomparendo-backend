@@ -126,7 +126,7 @@ export class VehicleService {
       'SELECT * FROM vehiculo WHERE numero = ? AND letra = ?',
       [
         vehicle.numero ?? plate_number,
-        vehicle.letra.toUpperCase() ?? plate_letter,
+        vehicle.letra?.toUpperCase() ?? plate_letter,
       ],
     );
 
