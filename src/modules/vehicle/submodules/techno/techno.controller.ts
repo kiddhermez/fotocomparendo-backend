@@ -24,12 +24,12 @@ export class TechnoController {
     return this.technoService.createTechno(techno);
   }
 
-  @Patch(':id')
+  @Patch('id/:id')
   updateTechno(@Param('id') id: string, @Body() techno: UpdateTechnoDto) {
     return this.technoService.updateTechno(id, techno);
   }
 
-  @Delete(':id')
+  @Delete('id/:id')
   deleteTechno(@Param('id') id: string) {
     return this.technoService.deleteTechno(id);
   }

@@ -25,12 +25,12 @@ export class SoatController {
     return this.soatService.createSoat(soat);
   }
 
-  @Patch(':id')
+  @Patch('id/:id')
   updateSoat(@Param('id') id: string, @Body() soat: UpdateSoatDto) {
     return this.soatService.updateSoat(id, soat);
   }
 
-  @Delete(':id')
+  @Delete('id/:id')
   deleteSoat(@Param('id') id: string) {
     return this.soatService.deleteSoat(id);
   }
