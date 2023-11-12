@@ -138,7 +138,7 @@ export class VehicleService {
       return isConflict<Vehicle>('Vehicle');
     }
 
-    vehicle.letra = vehicle.letra.toUpperCase() ?? plate_letter;
+    vehicle.letra = vehicle.letra?.toUpperCase() ?? plate_letter;
 
     await this.db.query(
       'UPDATE vehiculo SET ? WHERE numero = ? AND letra = ?',
